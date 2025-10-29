@@ -6,4 +6,8 @@ import os
 import uvicorn
 
 #Plantillas
+from database import database
 
+#Se crean variables para las plantillas(templates)
+templates = Jinja2Templates(directory=".")
+app= FastAPI()
