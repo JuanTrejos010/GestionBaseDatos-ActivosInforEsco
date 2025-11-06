@@ -6,7 +6,7 @@ import os
 import uvicorn
 
 #Llamando otros módulos
-from database import crear_Conexion
+from database import crear_Conexion, buscarSalas, buscarEquipo
 
 #Se crean variables para las plantillas(templates)
 templates = Jinja2Templates(directory=".")
@@ -29,12 +29,19 @@ def inicio(request: Request):
 Este es el listado de las tareas de CRUD como tal
 
 """
-#Llamando 
+#Consulta de salas 
 @app.get("Salas/")
-def tener_Salas():
+def ver_Salas():
     print("Busqueda de salas")
-    
-    return "Busqueda de salas"
+    resultado=buscarSalas()
+    return resultado
+
+#Consulta de equipos
+@app.get("Equipos/")
+def ver_Equipos():
+    print("Buscando equipos: \n")
+    resultado=buscarEquipo()
+    return resultado
 
 #Ejecución del servidor
 if __name__ == "__main__":

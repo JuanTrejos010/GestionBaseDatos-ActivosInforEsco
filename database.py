@@ -59,9 +59,18 @@ def buscarSalas(conn):
 #Función para registrar un equipo
 def registrarEquipo(conn, marca, modelo):
     cur=conn.cursor()
-    instruccion="""INSERT INTO Equipos (Marca, Modelo, Fecha_compra, )
+    instruccion="""INSERT INTO Equipo (Marca, Modelo, Fecha_compra )
     VALUES
         (%s, %s, %s, %s)
     """
     cur.execute(instruccion, {marca, modelo, datetime()})
     cur.commit()
+
+def buscarEquipo(conn):
+    cur=conn.cursor()
+    instruccion="SELECT Marca, Modelo, Fecha_compra FROM Equipo"
+    cur.execute(instruccion)
+    rows=cur.fetchall()
+    for row in rows:
+        print(row)
+    return rows
