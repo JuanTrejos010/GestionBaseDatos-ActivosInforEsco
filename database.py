@@ -62,7 +62,7 @@ def buscarSalas(conn):
     return rows
 
 #Función para registrar un equipo
-def registrarEquipo(conn, marca, modelo, id_sala):
+def registrarEquipo(conn, marca, modelo, fecha_compra, id_sala):
     cur=conn.cursor()
     instruccion="""INSERT INTO Equipo (Marca, Modelo, Fecha_compra )
     VALUES
