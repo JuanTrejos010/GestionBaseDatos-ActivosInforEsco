@@ -55,7 +55,7 @@ def crearTablas(conn):
 #Funcion para busquedas
 def buscarSalas(conn):
     cur=conn.cursor()
-    cur.execute("SELECT Sala, Tipo FROM Sala")
+    cur.execute("SELECT Sala.Sala, Tipo FROM Sala")
     rows=cur.fetchall()
     for row in rows:
         print(row)
@@ -64,7 +64,7 @@ def buscarSalas(conn):
 #Función para registrar un equipo
 def registrarEquipo(conn, marca, modelo, fecha_compra, id_sala):
     cur=conn.cursor()
-    instruccion="""INSERT INTO Equipo (Marca, Modelo, Fecha_compra )
+    instruccion="""INSERT INTO Equipo (Marca, Modelo, Fecha_compra, id_sala)
     VALUES
         (%s, %s, %s, %s)
     """
