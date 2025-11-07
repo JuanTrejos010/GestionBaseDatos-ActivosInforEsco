@@ -9,6 +9,11 @@ host = "localhost"
 port = 5432
 database = "Proyecto GestionBD"
 
+#Fecha de registros de cambios para el registro de auditoría:
+def registrarFecha():
+    d=datetime.datetime.now()
+    return d
+
 #Se crea la conexión
 def crear_Conexion():
     try:
@@ -57,15 +62,16 @@ def buscarSalas(conn):
     return rows
 
 #Función para registrar un equipo
-def registrarEquipo(conn, marca, modelo):
+def registrarEquipo(conn, marca, modelo, id_sala):
     cur=conn.cursor()
     instruccion="""INSERT INTO Equipo (Marca, Modelo, Fecha_compra )
     VALUES
         (%s, %s, %s, %s)
     """
-    cur.execute(instruccion, {marca, modelo, datetime()})
-    cur.commit()
+    cur.execute(instruccion, {marca, modelo, fecha_compra, id_sala})
+    conn.commit()
 
+#Buscar equipos
 def buscarEquipo(conn):
     cur=conn.cursor()
     instruccion="SELECT Marca, Modelo, Fecha_compra FROM Equipo"
