@@ -19,7 +19,9 @@ conn=crear_Conexion()
 Esta sección es para los recursos de frontend.
 
 """
+#
 #Esta sección es para los recursos de frontend.
+#######
 
 #Llamando la raíz
 @app.get("/")
@@ -29,11 +31,13 @@ def inicio(request: Request):
 """
 
 Este es el listado de las tareas de CRUD como tal
+#
 ######
 
 """
 #Consulta de salas 
 @app.get("/Salas/")
+@app.get("/salas/buscar")
 def ver_Salas():
     print("Busqueda de salas")
     resultado=buscarSalas(conn)
@@ -41,6 +45,7 @@ def ver_Salas():
 
 #Consulta de equipos
 @app.get("/Equipos/")
+@app.get("/equipos/buscar")
 def ver_Equipos():
     print("Buscando equipos: \n")
     resultado=buscarEquipo(conn)
@@ -49,8 +54,10 @@ def ver_Equipos():
 @app.post("/Equipos/{e}")
 def subir_Equipo():
     registrarEquipo(conn)
+        fecha_compra:str=Form(...),
     print("Equipos registrados")
     return 0
+    return {"mensaje": "Equipo registrado correctamente"}
 
 #Ejecución del servidor
 if __name__ == "__main__":
