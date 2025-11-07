@@ -14,13 +14,10 @@ templates = Jinja2Templates(directory="paginas")
 app= FastAPI()
 conn=crear_Conexion()
 
-"""
-
-Esta sección es para los recursos de frontend.
-
-"""
+#######
 #
 #Esta sección es para los recursos de frontend.
+#
 #######
 
 #Llamando la raíz
@@ -28,15 +25,13 @@ Esta sección es para los recursos de frontend.
 def inicio(request: Request):
     return templates.TemplateResponse("inicio.html", {"request": request})
 
-"""
-
-Este es el listado de las tareas de CRUD como tal
+######
+#
+#Este es el listado de las tareas de CRUD como tal
 #
 ######
 
-"""
 #Consulta de salas 
-@app.get("/Salas/")
 @app.get("/salas/buscar")
 def ver_Salas():
     print("Busqueda de salas")
@@ -44,20 +39,26 @@ def ver_Salas():
     return resultado
 
 #Consulta de equipos
-@app.get("/Equipos/")
 @app.get("/equipos/buscar")
 def ver_Equipos():
     print("Buscando equipos: \n")
     resultado=buscarEquipo(conn)
     return resultado
 
-@app.post("/Equipos/{e}")
-def subir_Equipo():
-    registrarEquipo(conn)
+#Subir equipos
+@app.post("/equipos/nuevo")
+def subir_Equipo(
+        marca:str= Form(...),
+        modelo:str=Form(...),
         fecha_compra:str=Form(...),
+        id_sala:int=Form(...)
+        ):
+    fecha_compra_dt=datetime.strptime(fecha_compra, "%Y-%m-%d").date()
+    registrarEquipo(conn, marca, modelo, fecha_compra_dt, id_sala)
     print("Equipos registrados")
-    return 0
     return {"mensaje": "Equipo registrado correctamente"}
+
+
 
 #Ejecución del servidor
 if __name__ == "__main__":
