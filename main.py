@@ -19,6 +19,7 @@ conn=crear_Conexion()
 Esta sección es para los recursos de frontend.
 
 """
+#Esta sección es para los recursos de frontend.
 
 #Llamando la raíz
 @app.get("/")
@@ -28,6 +29,7 @@ def inicio(request: Request):
 """
 
 Este es el listado de las tareas de CRUD como tal
+######
 
 """
 #Consulta de salas 
