@@ -4,6 +4,7 @@ from fastapi.responses import RedirectResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 import os
 import uvicorn
+from datetime import datetime
 
 #Llamando otros módulos
 from database import crear_Conexion, buscarSalas, buscarEquipo, registrarEquipo
