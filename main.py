@@ -10,7 +10,7 @@ from datetime import datetime
 from database import crear_Conexion, buscarSalas, buscarEquipo, registrarEquipo
 
 #Se crean variables para las plantillas(templates)
-templates = Jinja2Templates(directory="paginas")
+templates = Jinja2Templates(directory=".")
 app= FastAPI()
 conn=crear_Conexion()
 
@@ -23,7 +23,12 @@ conn=crear_Conexion()
 #Llamando la raíz
 @app.get("/")
 def inicio(request: Request):
-    return templates.TemplateResponse("inicio.html", {"request": request})
+    return templates.TemplateResponse("paginas/login/login.html", {"request": request})
+
+#Archivo de registro de equipos
+@app.get("/interfaz")
+def interfaz(request: Request):
+    return templates.TemplateResponse("paginas/principal/index.html", {"request": request})
 
 ######
 #
