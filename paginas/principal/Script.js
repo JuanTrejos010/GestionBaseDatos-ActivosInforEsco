@@ -86,12 +86,13 @@ function escapeHtml(text){ return String(text).replace(/&/g,'&amp;').replace(/</
 
 
 // Editar (llenar formulario)
+/*
 window.editRecord = function(id){
   const r = db.find(x=>x.id===id); if(!r) return;
   idField.value = r.id; nameField.value = r.name; emailField.value = r.email; roleField.value = r.role || '';
   formTitle.textContent = 'Editar registro';
   saveBtnText('Actualizar');
-}
+}*/
 
 
 function saveBtnText(text){ document.getElementById('saveBtn').textContent = text; }
