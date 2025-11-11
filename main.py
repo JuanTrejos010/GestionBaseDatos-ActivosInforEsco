@@ -8,7 +8,7 @@ import uvicorn
 from datetime import datetime
 
 #Llamando otros módulos
-from database import crear_Conexion, buscarSalas, buscarEquipo, registrarEquipo
+from database import crear_Conexion, Password, buscarSalas, buscarEquipo, registrarEquipo, eliminarEquipo
 
 #Se crean variables para las plantillas(templates)
 templates = Jinja2Templates(directory=".")
@@ -33,6 +33,14 @@ def loginScript():
 @app.get("/loginStyle.css")
 def loginStyle():
     return FileResponse("paginas/login/loginStyle.css")
+
+@app.get("/Script.js")
+def Script():
+    return FileResponse("paginas/principal/Script.js", media_type="application/javascript")
+
+@app.get("/Style.css")
+def Style():
+    return FileResponse("paginas/principal/Style.css")
 
 #Archivo de registro de equipos
 @app.get("/interfaz")
@@ -68,19 +76,28 @@ def ver_Equipos():
 #Subir equipos
 @app.post("/equipos/nuevo")
 def subir_Equipo(
+        nombre:str= Form(...),
         marca:str= Form(...),
         modelo:str=Form(...),
         fecha_compra:str=Form(...),
         id_sala:int=Form(...)
         ):
     fecha_compra_dt=datetime.strptime(fecha_compra, "%Y-%m-%d").date()
-    registrarEquipo(conn, marca, modelo, fecha_compra_dt, id_sala)
+    registrarEquipo(conn, nombre, marca, modelo, fecha_compra_dt, id_sala)
     print("Equipos registrados")
     return {"mensaje": "Equipo registrado correctamente"}
 
+#Eliminar equipos
+@app.post("/equipos/eliminar")
+def eliminar_equipo(id_equipo: int = Form(...)):
+    eliminarEquipo(conn, id_equipo)
+    return {"mensaje": "Equipo eliminado correctamente"}
+
+#Login
 @app.post("/login")
 def login(email: str = Form(...), password: str = Form(...)):
-    if email in USERS and USERS[email] == password:
+    row=Password(conn, email)
+    if row and row[0] == password:
         return {"success": True, "email": email}
     else:
         return {"success": False}

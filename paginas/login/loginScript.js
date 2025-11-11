@@ -71,6 +71,3 @@ form.addEventListener('submit', (e) => {
 });
 
 
-
-    //location.href="/interfaz"
-

@@ -1,14 +1,12 @@
-// DB simple usando localStorage
-const STORAGE_KEY = 'mi_db_local_v1';
-let db = [];
-
-
-// Elementos
+//Elementos
 const form = document.getElementById('recordForm');
 const idField = document.getElementById('id');
-const nameField = document.getElementById('name');
-const emailField = document.getElementById('email');
-const roleField = document.getElementById('role');
+const marcaField = document.getElementById('marca');
+const modeloField = document.getElementById('modelo');
+const estadoField = document.getElementById('estado');
+const fechaField = document.getElementById('fecha_compra');
+const descripcionField = document.getElementById('Descripción');
+const salaField = document.getElementById('id_sala');
 const tableBody = document.querySelector('#recordsTable tbody');
 const searchInput = document.getElementById('search');
 const exportBtn = document.getElementById('exportBtn');
@@ -17,59 +15,82 @@ const clearBtn = document.getElementById('clearBtn');
 const resetBtn = document.getElementById('resetBtn');
 const formTitle = document.getElementById('form-title');
 
+// Cargar tabla al inicio
+window.addEventListener('DOMContentLoaded', renderTable);
 
-// Cargar DB desde localStorage
-function loadDB(){
-    const raw = localStorage.getItem(STORAGE_KEY);
-    db = raw ? JSON.parse(raw) : [];
-}
+/* 
+* CRUD
+*/
 
-
-function saveDB(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-}
-
-
-function renderTable(filter = ''){
-    tableBody.innerHTML = '';
-    const list = db.filter(r => {
-    if(!filter) return true;
+//Llamando los datos de equipos
+async function renderTable(filter = '') {
+  const response = await fetch('/equipos/buscar');
+  const data = await response.json(); // viene desde PostgreSQL
+  const list = data.filter(r => {
+    if (!filter) return true;
     const q = filter.toLowerCase();
-    return r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q);
-    });
-    list.forEach(r => {
+    return r.marca.toLowerCase().includes(q) || r.modelo.toLowerCase().includes(q);
+  });
+
+  const tableBody = document.querySelector('#recordsTable tbody');
+  tableBody.innerHTML = '';
+
+  list.forEach(r => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-    <td>${r.id}</td>
-    <td>${escapeHtml(r.name)}</td>
-    <td>${escapeHtml(r.email)}</td>
-    <td>${escapeHtml(r.role || '')}</td>
-    <td class="actions">
-    <button class="small-btn" onclick="editRecord('${r.id}')">Editar</button>
-    <button class="small-btn" onclick="deleteRecord('${r.id}')">Borrar</button>
-    </td>`;
+      <td>${r.id_equipo}</td>
+      <td>${r.nombre}</td>
+      <td>${r.marca}</td>
+      <td>${r.modelo}</td>
+      <td>${r.id_sala}</td>
+      <td>
+        <button onclick="editRecord(${r.id_equipo})">Editar</button>
+        <button onclick="deleteRecord(${r.id_equipo})">Borrar</button>
+      </td>`;
     tableBody.appendChild(tr);
-    });
+  });
 }
 
+async function addRecord() {
+  const marca = document.getElementById('marca').value;
+  const modelo = document.getElementById('modelo').value;
+  const fecha_compra = document.getElementById('fecha_compra').value;
+  const id_sala = document.getElementById('id_sala').value;
+
+  const response = await fetch('/equipos/nuevo', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: new URLSearchParams({ marca, modelo, fecha_compra, id_sala })
+  });
+
+  const data = await response.json();
+  alert(data.mensaje || 'Equipo registrado');
+  renderTable();
+}
+
+async function deleteRecord(id) {
+  if (!confirm('¿Eliminar este registro?')) return;
+  const response = await fetch('/equipos/eliminar', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: new URLSearchParams({ id_equipo: id })
+  });
+  const data = await response.json();
+  alert(data.mensaje);
+  renderTable();
+}
 
 // Helpers
 function uid(){ return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8); }
 function escapeHtml(text){ return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 
-// CRUD
-function addRecord(obj){ db.push(obj); saveDB(); renderTable(searchInput.value); }
-function updateRecord(id, data){ const i = db.findIndex(x=>x.id===id); if(i>-1){ db[i] = {...db[i], ...data}; saveDB(); renderTable(searchInput.value);} }
-function deleteRecord(id){ if(confirm('Eliminar registro?')){ db = db.filter(x=>x.id!==id); saveDB(); renderTable(searchInput.value);} }
-
-
 // Editar (llenar formulario)
 window.editRecord = function(id){
-const r = db.find(x=>x.id===id); if(!r) return;
-idField.value = r.id; nameField.value = r.name; emailField.value = r.email; roleField.value = r.role || '';
-formTitle.textContent = 'Editar registro';
-saveBtnText('Actualizar');
+  const r = db.find(x=>x.id===id); if(!r) return;
+  idField.value = r.id; nameField.value = r.name; emailField.value = r.email; roleField.value = r.role || '';
+  formTitle.textContent = 'Editar registro';
+  saveBtnText('Actualizar');
 }
 
 
@@ -102,4 +123,5 @@ form.addEventListener('submit', (e)=>{
 
 
 form.reset(); idField.value = ''; formTitle.textContent = 'Agregar registro'; saveBtnText('Guardar');
-loadDB(); renderTable();
+//loadDB();
+renderTable();

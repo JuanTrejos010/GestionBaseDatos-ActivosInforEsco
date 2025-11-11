@@ -4,35 +4,47 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Liceo Moderno Base de Datos</title>
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="/Style.css">
 </head>
 <body>
 <header>
     <div class="titulo">
     <h1>Base de Datos Liceo Moderno Campestre</h1>
-    <p>Gestión de usuarios: añade, edita, elimina y exporta registros.</p>
+    <p>Gestión de equipos: añade, edita, elimina y exporta registros.</p>
     </div>
 </header>
 <main>
     <section class="form">
         <h2 id="form-title">Agregar registro de inventario</h2>
         <form id="recordForm">
-        <input type="hidden" id="id">
-        <label>Nombre
-        <input id="nombre" type="text" required placeholder="Nombre completo del componente">
-        </label>
-        <label>Estado
-        <input id="Estado" type="text" required placeholder="Bueno, Malo, Regular">
-        </label>
-        <label>Descripción
-        <input id="Descripción" type="text" placeholder="Color, Forma, Marca, Serial">
-        </label>
-        <label>Acciones
-        <input id="Acciones" type="text" placeholder="Se paso a otro salón">
-        </label>
+        <input type="hidden" id="id_equipo">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" type="text" placeholder="Nombre del producto">
+        <label for="marca">Marca</label>
+        <input id="marca" type="text" required placeholder="Marca">
+        <label for="modelo">Modelo</label>
+        <input id="modelo" type="text" required placeholder="Modelo del componente">
+        <label for="estado">Estado</label>
+        <input id="estado" type="text" required placeholder="Bueno, Malo, Regular">
+        <label for="fecha_compra">Fecha de compra</label>
+        <input id="fecha_compra" type="date">
+        <label for="id_sala">Salón</label>
+        <input list="salas" id="id_sala">
+        <datalist id="salas">
+            <option value="1">A</option>
+            <option value="2">101</option>
+            <option value="3">102</option>
+            <option value="4">B</option>
+            <option value="5">201</option>
+            <option value="6">202</option>
+            <option value="7">203</option>
+        </datalist>
+        <!--<label>Acciones</label>
+        <input id="Acciones" type="text" placeholder="Se paso a otro salón">-->
+        
 
         <div class="actions">
-        <button type="submit" id="saveBtn">Guardar</button>
+        <button type="submit" id="saveBtn" onclick="addRecord()">Guardar</button>
         <button type="button" id="resetBtn">Limpiar</button>
         </div>
         </form>
@@ -51,7 +63,15 @@
         <h2>Registros</h2>
         <table id="recordsTable">
         <thead>
-        <tr><th>ID</th><th>Nombre</th><th>Estado</th><th>Descripción</th><th>Acciones</th></tr>
+        <tr>
+            <th>ID</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Fecha de compra</th>
+            <th>Estado</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
         </thead>
         <tbody></tbody>
         </table>
@@ -59,9 +79,9 @@
     </main>
 
     <div class="Final">
-    <footer>Demo: Esta es una base de datos de prueba <strong></strong>. No es una base de datos real en servidor.</footer>
+    <footer></footer>
     </div>
 
-    <script src="Script.js"></script>
+    <script src="/Script.js"></script>
 </body>
 </html>
