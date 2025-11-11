@@ -25,6 +25,14 @@ conn=crear_Conexion()
 def inicio(request: Request):
     return templates.TemplateResponse("paginas/login/login.html", {"request": request})
 
+@app.get("/loginScript.js")
+def loginScript(request: Request):
+    return templates.TemplateResponse("paginas/login/loginScript.js", {"request": request})
+
+@app.get("/loginStyle.css")
+def loginStyle(request: Request):
+    return templates.TemplateResponse("paginas/login/loginStyle.css", {"request": request})
+
 #Archivo de registro de equipos
 @app.get("/interfaz")
 def interfaz(request: Request):
