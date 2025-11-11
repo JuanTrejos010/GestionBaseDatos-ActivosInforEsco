@@ -37,38 +37,47 @@ showAlert('success', 'Credenciales de demo cargadas. Presiona "Iniciar sesión".
 
 // Validación simple de email
 function validarEmail(email){
-return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 
-form.addEventListener('submit'), (e)=>{
-e.preventDefault();
-alertBox.innerHTML = '';
-}
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  alertBox.innerHTML = '';
 
-const email = form.email.value.trim();
-const pwd = form.password.value;
+  const email = form.email.value.trim();
+  const pwd = form.password.value;
+
+  // Validaciones del lado del cliente
+  if (!email || !pwd) {
+    showAlert('error','Por favor completa todos los campos.');
+    return;
+  }
+
+  if (!validarEmail(email)) {
+    showAlert('error','Introduce un correo electrónico válido.');
+    return;
+  }
+
+  // Aquí podrías enviar al backend con fetch()
+  fetch('/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: new URLSearchParams({email, password: pwd})
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      showAlert('success', `¡Bienvenido, ${email.split('@')[0]}!`);
+      location.href = '/interfaz';
+    } else {
+      showAlert('error', 'Credenciales incorrectas.');
+    }
+  })
+  .catch(err => showAlert('error', 'Error en el servidor.'));
+});
 
 
-// Validaciones del lado del cliente
-if(!email || !pwd){
-showAlert('error','Por favor completa todos los campos.');
-return;
-}
 
+    //location.href="/interfaz"
 
-if(!validarEmail(email)){
-showAlert('error','Introduce un correo electrónico válido.');
-return;
-}
-
-
-// Simular proceso de autenticación
-const found = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === pwd);
-if(found){
-// En una app real redirigirías o establecerías token recibido del servidor
-showAlert('success', `¡Bienvenido, ${email.split('@')[0]}! Has iniciado sesión correctamente.`);
-// ejemplo: localStorage si marcó "recuérdame"
-if(form.remember.checked){
-localStorage.setItem('rememberedUser', email);
-}};

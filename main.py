@@ -1,7 +1,8 @@
 #Librerias para importar
 from fastapi import FastAPI, HTTPException, Request, Form
-from fastapi.responses import RedirectResponse, HTMLResponse
+from fastapi.responses import RedirectResponse, HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 import os
 import uvicorn
 from datetime import datetime
@@ -26,12 +27,12 @@ def inicio(request: Request):
     return templates.TemplateResponse("paginas/login/login.html", {"request": request})
 
 @app.get("/loginScript.js")
-def loginScript(request: Request):
-    return templates.TemplateResponse("paginas/login/loginScript.js", {"request": request})
+def loginScript():
+    return FileResponse("paginas/login/loginScript.js", media_type="application/javascript")
 
 @app.get("/loginStyle.css")
-def loginStyle(request: Request):
-    return templates.TemplateResponse("paginas/login/loginStyle.css", {"request": request})
+def loginStyle():
+    return FileResponse("paginas/login/loginStyle.css")
 
 #Archivo de registro de equipos
 @app.get("/interfaz")
@@ -71,7 +72,9 @@ def subir_Equipo(
     print("Equipos registrados")
     return {"mensaje": "Equipo registrado correctamente"}
 
-
+@app.post("/login")
+def login(usuario: str = Form(...), contraseña: str = Form(...)):
+    return {"usuario": usuario, "contraseña": contraseña}
 
 #Ejecución del servidor
 if __name__ == "__main__":
