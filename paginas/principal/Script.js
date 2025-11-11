@@ -122,6 +122,7 @@ form.addEventListener('submit', (e)=>{
 });
 
 
-form.reset(); idField.value = ''; formTitle.textContent = 'Agregar registro'; saveBtnText('Guardar');
-//loadDB();
+form.reset(); 
+formTitle.textContent = 'Agregar registro';
+saveBtnText('Guardar');
 renderTable();

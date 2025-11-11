@@ -47,11 +47,6 @@ def Style():
 def interfaz(request: Request):
     return templates.TemplateResponse("paginas/principal/index.html", {"request": request})
 
-#Usuarios 
-USERS = {
-    "estudiante@liceo.com": "Estu1234!",
-    "docente@liceo.com": "Docente2025"
-}
 
 ######
 #
