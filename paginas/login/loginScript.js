@@ -6,13 +6,6 @@ const passwordInput = document.getElementById('password');
 const demoBtn = document.getElementById('demo');
 
 
-// Simulación simple de usuarios — en producción esto no debe estar en el front-end.
-const users = [
-{email:'estudiante@liceo.com', password:'Estu1234!'},
-{email:'docente@liceo.com', password:'Docente2025'}
-];
-
-
 function showAlert(type, text){
 alertBox.innerHTML = `<div class="${type==='error'?'error':'success'}">${text}</div>`;
 }

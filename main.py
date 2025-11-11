@@ -39,6 +39,12 @@ def loginStyle():
 def interfaz(request: Request):
     return templates.TemplateResponse("paginas/principal/index.html", {"request": request})
 
+#Usuarios 
+USERS = {
+    "estudiante@liceo.com": "Estu1234!",
+    "docente@liceo.com": "Docente2025"
+}
+
 ######
 #
 #Este es el listado de las tareas de CRUD como tal
@@ -73,8 +79,11 @@ def subir_Equipo(
     return {"mensaje": "Equipo registrado correctamente"}
 
 @app.post("/login")
-def login(usuario: str = Form(...), contraseña: str = Form(...)):
-    return {"usuario": usuario, "contraseña": contraseña}
+def login(email: str = Form(...), password: str = Form(...)):
+    if email in USERS and USERS[email] == password:
+        return {"success": True, "email": email}
+    else:
+        return {"success": False}
 
 #Ejecución del servidor
 if __name__ == "__main__":
