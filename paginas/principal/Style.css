@@ -1,0 +1,24 @@
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+background: linear-gradient(135deg, blue 20%, green 70%);
+}
+header{padding:20px;text-align:center;color:  white;}
+main{display:grid;grid-template-columns:360px 1fr;gap:20px;padding:20px;max-width:1100px;margin:0 auto; color: white;}
+.form, .table{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 6px 20px; color: white;}
+.form label{display:block;margin-bottom:8px;font-size:14px; color: white;}
+.form input[type="text"], .form input[type="email"], .tools input{width:100%;padding:10px;border-radius:8px;border:1px solid black;background:white}
+.actions{display:flex;gap:8px;margin-top:10px;color: white;}
+button{background:linear-gradient(90deg,var(--accent), white);color:white;padding:10px 12px;border-radius:8px;border:0;cursor:pointer}
+button[disabled]{opacity:0.6}
+.tools{display:flex;gap:8px;flex-direction:column;margin-top:12px;color: white;}
+.tools input[type="file"]{padding:6px; color: white;}
+.table table{width:100%;border-collapse:collapse; color: white;}
+.table th, .table td{padding:10px;border-bottom:1px solid  white;text-align:left}
+.table td.actions{display:flex;gap:6px; color: white;}
+.small-btn{background:transparent;border:1px solid white;color:var(--accent);padding:6px;border-radius:6px}
+.titulo{color: white;}
+@media(max-width:900px){main{grid-template-columns:1fr;color: white;}}
+.Final{color: white; text-align: center;}
+.form{color: white;}
+.table{color: white}

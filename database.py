@@ -50,7 +50,7 @@ def crearTablas(conn):
     );
     """
     cur.execute(instruccion)
-    cur.commit()
+    conn.commit()
 
 #Funcion para busquedas
 def buscarSalas(conn):
@@ -68,7 +68,7 @@ def registrarEquipo(conn, marca, modelo, fecha_compra, id_sala):
     VALUES
         (%s, %s, %s, %s)
     """
-    cur.execute(instruccion, {marca, modelo, fecha_compra, id_sala})
+    cur.execute(instruccion, (marca, modelo, fecha_compra, id_sala))
     conn.commit()
 
 #Buscar equipos
