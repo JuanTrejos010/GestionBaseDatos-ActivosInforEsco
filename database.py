@@ -38,6 +38,7 @@ def conexionPrueba(conn):
     cur.execute("SELECT version();")
     row=cur.fetchone()
     print(f"Version: \n{row}")
+    cur.close()
 
 #Funcion de conexion
 def Password(conn, email):
@@ -60,6 +61,7 @@ def crearTablas(conn):
     """
     cur.execute(instruccion)
     conn.commit()
+    cur.close()
 
 #Funcion para busquedas
 def buscarSalas(conn):
@@ -94,6 +96,26 @@ def buscarEquipo(conn):
         print(row)
     resultado = [
         {"id_equipo": r[0], "nombre": r[1],"marca": r[2], "modelo": r[3], "fecha_compra": r[4], "estado": r[5], "id_sala": r[6], "sala": r[7]}
+        for r in rows
+    ]
+    cur.close()
+    return resultado
+
+#Buscar reporte (TBA)
+def buscarReporte(conn, id_reporte):
+    cur=conn.cursor
+    instruccion="""
+    SELECT id_reporte, fecha_reporte, detalle, reporte.id_equipo, equipo.nombre FROM reporte JOIN equipo
+    ON reporte.id_equipo=equipo.id_equipo
+    ORDER BY id_reporte
+    WHERE id_reporte= %s;
+    """
+    cur.execute(instruccion)
+    rows=cur.fetchall()
+    for row in rows:
+        print(row)
+    resultado = [
+        {"id_reporte": r[0], "fecha_reporte": r[1], "detalle": r[2], "id_equipo": r[3], "nombre": r[4]}
         for r in rows
     ]
     cur.close()
