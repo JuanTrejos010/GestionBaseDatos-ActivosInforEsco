@@ -85,13 +85,15 @@ def registrarEquipo(conn, nombre, marca, modelo, fecha_compra, id_sala):
 #Buscar equipos
 def buscarEquipo(conn):
     cur=conn.cursor()
-    instruccion="SELECT ID_Equipo, Marca, Modelo, Fecha_compra FROM Equipo"
+    instruccion="""SELECT ID_Equipo, nombre, Marca, Modelo, Fecha_compra, Estado, Equipo.id_sala, sala.sala FROM Equipo JOIN sala
+    ON Equipo.id_sala=sala.id_sala
+    ORDER BY ID_Equipo"""
     cur.execute(instruccion)
     rows=cur.fetchall()
     for row in rows:
         print(row)
     resultado = [
-        {"id_equipo": r[0], "marca": r[1], "modelo": r[2], "id_sala": r[3]}
+        {"id_equipo": r[0], "nombre": r[1],"marca": r[2], "modelo": r[3], "fecha_compra": r[4], "estado": r[5], "id_sala": r[6], "sala": r[7]}
         for r in rows
     ]
     cur.close()

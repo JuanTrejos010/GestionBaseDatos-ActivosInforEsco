@@ -42,7 +42,9 @@ async function renderTable(filter = '') {
       <td>${r.nombre}</td>
       <td>${r.marca}</td>
       <td>${r.modelo}</td>
-      <td>${r.id_sala}</td>
+      <td>${r.fecha_compra}</td>
+      <td>${r.estado}</td>
+      <td>${r.id_sala} (${r.sala})</td>
       <td>
         <button onclick="editRecord(${r.id_equipo})">Editar</button>
         <button onclick="deleteRecord(${r.id_equipo})">Borrar</button>
@@ -52,15 +54,17 @@ async function renderTable(filter = '') {
 }
 
 async function addRecord() {
+  const nombre = document.getElementById('nombre').value;
   const marca = document.getElementById('marca').value;
   const modelo = document.getElementById('modelo').value;
+  const estado =document.getElementById('estado').value;
   const fecha_compra = document.getElementById('fecha_compra').value;
   const id_sala = document.getElementById('id_sala').value;
 
   const response = await fetch('/equipos/nuevo', {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: new URLSearchParams({ marca, modelo, fecha_compra, id_sala })
+    body: new URLSearchParams({ nombre, marca, modelo, fecha_compra, id_sala })
   });
 
   const data = await response.json();
@@ -96,31 +100,6 @@ window.editRecord = function(id){
 
 
 function saveBtnText(text){ document.getElementById('saveBtn').textContent = text; }
-
-
-// Form submit
-form.addEventListener('submit', (e)=>{
-  e.preventDefault();
-
-  const name = nameField.value.trim();
-  const email = emailField.value.trim();
-  const role = roleField.value.trim();
-
-  if(!name || !email)
-    { 
-        alert('Nombre y correo son obligatorios');
-        return;
-    }
-
-  const existingId = idField.value;
-  if(existingId){ updateRecord(existingId, { name, email, role }); }
-  else{ addRecord({ id: uid(), name, email, role }); }
-
-  form.reset();
-  idField.value = '';
-  formTitle.textContent = 'Agregar registro';
-  saveBtnText('Guardar');
-});
 
 
 form.reset(); 
