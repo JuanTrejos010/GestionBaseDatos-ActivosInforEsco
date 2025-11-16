@@ -43,7 +43,7 @@ def conexionPrueba(conn):
 #Funcion de conexion
 def Password(conn, email):
     cur=conn.cursor()
-    cur.execute("SELECT contrasena FROM usuarios WHERE email = %s", (email,))
+    cur.execute("SELECT contrasena FROM usuarios WHERE email = %s", (email,)) #La coma es importante
     row=cur.fetchone()
     cur.close()
     return row
